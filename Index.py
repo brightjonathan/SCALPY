@@ -4,6 +4,8 @@ from Algo_one import Input_Validation;
 from Algo_two.Port_Scanning import perform_port_scanning;
 
 
+
+
 #added a custom ASCII art banner and color codes
 print('''
   \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mAAAA\033[0m   \033[34mPPPP\033[0m   \033[35mYYYY\033[0m   
@@ -15,6 +17,7 @@ print('''
    \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mA\033[0m    \033[33mA\033[0m \033[34mP\033[0m     \033[35mY\033[0m     
 ''')
 
+#calling the main function
 if __name__ == "__main__":
     args = Input_parse.parse_arguments() #parse the arguments and store them in the args variable
 

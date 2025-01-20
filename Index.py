@@ -35,29 +35,14 @@ if __name__ == "__main__":
     # Perform service detection on open ports
     service_info = detect_service(args.target, open_ports)
 
-# Output results
-if args.output_format == "text":
-    print("\nOpen Ports and Services:")
-    for port in open_ports:
-        service = service_info.get(port, "Unknown Service")
-        print(f"- Port {port}: {service}")
-elif args.output_format == "json":
-    import json
-    output = {
-        "open_ports": open_ports,
-        "services": service_info
-    }
-    print(json.dumps(output, indent=2))
-
 
     #Display parsed arguments for debugging
     print("Target Host:", args.target)
     print("Port Range:", args.port_range)
     print("AI Mode Enabled:", args.ai_mode)
-    print("Output Format:", args.output_format)
 
 
 
 #FORMAT OF THE COMMAND TO RUN THE SCRIPT
-#python Index.py -t tailwindcss.com -p 20-80 --ai-mode --output-format json
+#python Index.py -t tailwindcss.com -p 20-80 --ai-mode  
 

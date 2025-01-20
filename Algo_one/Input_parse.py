@@ -30,13 +30,5 @@ def parse_arguments():
         help="Enable AI mode for intelligent scanning"
     )
 
-    # Output format selection
-    parser.add_argument(
-        "--output-format",
-        type=str,
-        choices=["text", "json"],
-        default="text",
-        help="Output format (text or JSON)"
-    )
 
     return parser.parse_args(); #parse the arguments and return the result

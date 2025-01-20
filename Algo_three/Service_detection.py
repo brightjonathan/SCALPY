@@ -27,7 +27,7 @@ def detect_service(target, open_ports):
             try:
                 port, service = future.result()
                 service_info[port] = service
-                #print(f"Port {port}: {service_info[port]}")
+                print(f"Port {port}: {service_info[port]}")
             except Exception as e:
                 print(f"Port {port} generated an exception: {e}")
 

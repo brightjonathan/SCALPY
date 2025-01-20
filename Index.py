@@ -2,8 +2,7 @@
 from Algo_one import Input_parse; 
 from Algo_one import Input_Validation; 
 from Algo_two.Port_Scanning import perform_port_scanning;
-
-
+from Algo_three.Service_detection import detect_service;
 
 
 #added a custom ASCII art banner and color codes
@@ -33,14 +32,22 @@ if __name__ == "__main__":
      # Perform port scanning
     open_ports = perform_port_scanning(args.target, args.port_range, timeout=1, verbose=True)
 
-    # Output results
-    if args.output_format == "text":
-        print("\nOpen Ports:")
-        for port in open_ports:
-            print(f"- {port}")
-    elif args.output_format == "json":
-        import json
-        print(json.dumps({"open_ports": open_ports}, indent=2))
+    # Perform service detection on open ports
+    service_info = detect_service(args.target, open_ports)
+
+# Output results
+if args.output_format == "text":
+    print("\nOpen Ports and Services:")
+    for port in open_ports:
+        service = service_info.get(port, "Unknown Service")
+        print(f"- Port {port}: {service}")
+elif args.output_format == "json":
+    import json
+    output = {
+        "open_ports": open_ports,
+        "services": service_info
+    }
+    print(json.dumps(output, indent=2))
 
 
     #Display parsed arguments for debugging

@@ -3,7 +3,7 @@ from Algo_one import Input_parse;
 from Algo_one import Input_Validation; 
 from Algo_two.Port_Scanning import perform_port_scanning;
 from Algo_three.Service_detection import detect_service;
-from Algo_four.ai_analysis import prepare_data_for_analysis # Importing AI-powered analysis
+from AI_Analysis import perform_ai_analysis  # Importing AI-powered analysis
 
 
 #added a custom ASCII art banner and color codes
@@ -36,13 +36,10 @@ if __name__ == "__main__":
     # Perform service detection on open ports
     service_info = detect_service(args.target, open_ports)
 
-     # If AI mode is enabled, prepare data for analysis
+    # Perform AI-powered analysis if AI mode is enabled
     if args.ai_mode:
-        print("\nPreparing data for AI analysis...")
-        feature_matrix = prepare_data_for_analysis(service_info)
-        print("Feature Matrix:")
-        print(feature_matrix)
-
+        ai_results = perform_ai_analysis(service_info)
+        print("AI Analysis Results:", ai_results)
 
 
     #Display parsed arguments for debugging
@@ -53,5 +50,4 @@ if __name__ == "__main__":
 
 
 #FORMAT OF THE COMMAND TO RUN THE SCRIPT
-#python Index.py -t tailwindcss.com -p 20-80 --ai-mode  
-
+#python Index.py -t tailwindcss.com -p 20-80 --ai-mode

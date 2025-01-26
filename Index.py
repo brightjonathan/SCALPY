@@ -1,8 +1,7 @@
 #importing all modules 
 from Algo_one import Input_parse; 
 from Algo_one import Input_Validation; 
-from Algo_two.Port_Scanning import perform_port_scanning;
-from Algo_three.Service_detection import detect_service;
+from Algo_two.Port_Scanning import main as perform_port_scanning;
 
 
 #added a custom ASCII art banner and color codes
@@ -28,12 +27,16 @@ if __name__ == "__main__":
     if not Input_Validation.validate_port_range(args.port_range):
         exit(1)
 
-
+    
+ # Convert port_range to a list of integers
+    if '-' in args.port_range:
+        start, end = map(int, args.port_range.split('-'))
+        port_range = list(range(start, end + 1))
+    else:
+        port_range = list(map(int, args.port_range.split(',')))
+    
      # Perform port scanning
-    open_ports = perform_port_scanning(args.target, args.port_range, timeout=1, verbose=True)
-
-    # Perform service detection on open ports
-    service_info = detect_service(args.target, open_ports)
+    open_ports = perform_port_scanning(args.target, port_range, timeout=1, verbose=True)
 
      # If AI mode is enabled, prepare data for analysis
     if args.ai_mode:

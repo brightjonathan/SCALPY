@@ -1,7 +1,9 @@
 #importing all modules 
 from Algo_one import Input_parse; 
 from Algo_one import Input_Validation; 
-from Algo_two.Port_Scanning import main as perform_port_scanning;
+from Algo_two.Port_Scanning import scan_ports
+from Algo_three.Service_detection import detect_service
+from Algo_four.ai_analysis import integrate_ai_with_scan
 
 
 #added a custom ASCII art banner and color codes
@@ -36,13 +38,14 @@ if __name__ == "__main__":
         port_range = list(map(int, args.port_range.split(',')))
     
      # Perform port scanning
-    open_ports = perform_port_scanning(args.target, port_range, timeout=1, verbose=True)
+    open_ports = scan_ports(args.target, port_range, timeout=1, verbose=True)
+    if open_ports:
+       service_info = detect_service(args.target, open_ports)
 
      # If AI mode is enabled, prepare data for analysis
     if args.ai_mode:
         print("\nPreparing data for AI analysis...")
-
-
+        integrate_ai_with_scan(args.target, open_ports, service_info)
 
 
     #Display parsed arguments for debugging

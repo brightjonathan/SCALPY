@@ -1,58 +1,63 @@
-#importing all modules 
-from Algo_one import Input_parse; 
-from Algo_one import Input_Validation; 
+#importing all modules
+from Algo_one import Input_parse, Input_Validation
 from Algo_two.Port_Scanning import scan_ports
 from Algo_three.Service_detection import detect_service
-from Algo_four.ai_analysis import integrate_ai_with_scan
 
+# Function to display ASCII art banner
+def display_banner():
+    print('''
+      \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mAAAA\033[0m   \033[34mLLLL\033[0m   \033[35mPPPP\033[0m   \033[36mYYYY\033[0m   
+     \033[31mS\033[0m     \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m   \033[35mP\033[0m   \033[36mY\033[0m     
+     \033[31mS\033[0m       \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m   \033[35mP\033[0m   \033[36mY\033[0m     
+      \033[31mSSSS\033[0m  \033[32mC\033[0m      \033[33mAAAAAA\033[0m \033[34mL\033[0m      \033[35mPPPP\033[0m    \033[36mY\033[0m     
+           \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m     \033[36mY\033[0m     
+     \033[31mS\033[0m     \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m     \033[36mY\033[0m     
+      \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mA\033[0m    \033[33mA\033[0m \033[34mLLLL\033[0m   \033[35mP\033[0m     \033[36mY\033[0m     
+    ''')
 
-#added a custom ASCII art banner and color codes
-print('''
-  \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mAAAA\033[0m   \033[34mLLLL\033[0m   \033[35mPPPP\033[0m   \033[36mYYYY\033[0m   
- \033[31mS\033[0m     \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m   \033[35mP\033[0m   \033[36mY\033[0m     
- \033[31mS\033[0m       \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m   \033[35mP\033[0m   \033[36mY\033[0m     
-  \033[31mSSSS\033[0m  \033[32mC\033[0m      \033[33mAAAAAA\033[0m \033[34mL\033[0m      \033[35mPPPP\033[0m    \033[36mY\033[0m     
-       \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m     \033[36mY\033[0m     
- \033[31mS\033[0m     \033[31mS\033[0m \033[32mC\033[0m      \033[33mA\033[0m    \033[33mA\033[0m \033[34mL\033[0m      \033[35mP\033[0m     \033[36mY\033[0m     
-  \033[31mSSSS\033[0m   \033[32mCCCC\033[0m   \033[33mA\033[0m    \033[33mA\033[0m \033[34mLLLL\033[0m   \033[35mP\033[0m     \033[36mY\033[0m     
-''')
-
-#calling the main function
-if __name__ == "__main__":
-    args = Input_parse.parse_arguments() #parse the arguments and store them in the args variable
-
+# Main function
+def main():
+    display_banner()
+    args = Input_parse.parse_arguments()
 
     # Validate inputs
     if not Input_Validation.validate_target(args.target):
+        print("Invalid target host. Exiting...")
         exit(1)
 
     if not Input_Validation.validate_port_range(args.port_range):
+        print("Invalid port range. Exiting...")
         exit(1)
 
-    
- # Convert port_range to a list of integers
-    if '-' in args.port_range:
-        start, end = map(int, args.port_range.split('-'))
-        port_range = list(range(start, end + 1))
-    else:
-        port_range = list(map(int, args.port_range.split(',')))
-    
-     # Perform port scanning
-    open_ports = scan_ports(args.target, port_range, timeout=1, verbose=True)
-    if open_ports:
-       service_info = detect_service(args.target, open_ports)
+    try:
+        # Parse port range
+        if '-' in args.port_range:
+            start, end = map(int, args.port_range.split('-'))
+            port_range = list(range(start, end + 1))
+        else:
+            port_range = list(map(int, args.port_range.split(',')))
 
-     # If AI mode is enabled, prepare data for analysis
-    if args.ai_mode:
-        print("\nPreparing data for AI analysis...")
-        integrate_ai_with_scan(args.target, open_ports, service_info)
+        # Port scanning
+        open_ports = scan_ports(args.target, port_range, timeout=1, verbose=True)
+        if open_ports:
+            service_info = detect_service(args.target, open_ports)
 
+        # AI integration
+        if args.ai_mode:
+            print("\nPreparing data for AI analysis...")
+          
 
-    #Display parsed arguments for debugging
-    print("Target Host:", args.target)
-    print("Port Range:", args.port_range)
-    print("AI Mode Enabled:", args.ai_mode)
+        # Debug information
+        print("Target Host:", args.target)
+        print("Port Range:", args.port_range)
+        print("AI Mode Enabled:", args.ai_mode)
 
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        exit(1)
+
+if __name__ == "__main__":
+    main()
 
 
 #FORMAT OF THE COMMAND TO RUN THE SCRIPT
